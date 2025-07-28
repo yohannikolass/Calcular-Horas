@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Calculadora de Diferença de Horas</title>
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            min-height: 100vh;
+
+            background-color: #f4f4f4;
+
+            margin: 0;
+
+        }
+
+
+
+        .calculator-container {
+
+            background-color: #fff;
+
+            padding: 30px;
+
+            border-radius: 8px;
+
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+            text-align: center;
+
+            width: 300px;
+
+        }
+
+
+
+        h1 {
+
+            color: #333;
+
+            margin-bottom: 20px;
+
+        }
+
+
+
+        .input-group {
+
+            margin-bottom: 15px;
+
+            text-align: left;
+
+        }
+
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #555;
+
+            font-weight: bold;
+
+        }
+
+
+
+        input[type="time"] {
+
+            width: calc(100% - 20px);
+
+            padding: 10px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 4px;
+
+            font-size: 16px;
+
+        }
+
+
+
+        button {
+
+            background-color: #007bff;
+
+            color: white;
+
+            padding: 10px 20px;
+
+            border: none;
+
+            border-radius: 4px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            transition: background-color 0.3s ease;
+
+        }
+
+
+
+        button:hover {
+
+            background-color: #0056b3;
+
+        }
+
+
+
+        #resultado {
+
+            margin-top: 20px;
+
+            font-size: 1.1em;
+
+            color: #333;
+
+            font-weight: bold;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="calculator-container">
+
+        <h1>Calculadora de Horas</h1>
+
+        <div class="input-group">
+
+            <label for="hora1">Primeiro Horário:</label>
+
+            <input type="time" id="hora1" value="00:00">
+
+        </div>
+
+        <div class="input-group">
+
+            <label for="hora2">Segundo Horário:</label>
+
+            <input type="time" id="hora2" value="00:00">
+
+        </div>
+
+        <button onclick="calcularDiferenca()">Calcular</button>
+
+        <p id="resultado"></p>
+
+    </div>
+
+
+
+    <script>
+
+        function calcularDiferenca() {
+
+            const hora1Input = document.getElementById('hora1').value;
+
+            const hora2Input = document.getElementById('hora2').value;
+
+            const resultadoElement = document.getElementById('resultado');
+
+
+
+            // Verifica se os inputs estão preenchidos
+
+            if (!hora1Input || !hora2Input) {
+
+                resultadoElement.textContent = "Por favor, insira ambos os horários.";
+
+                return;
+
+            }
+
+
+
+            // Converte os horários para objetos Date para facilitar o cálculo
+
+            // Usamos uma data base arbitrária (hoje) para garantir a consistência
+
+            const hoje = new Date();
+
+            const [h1, m1] = hora1Input.split(':').map(Number);
+
+            const [h2, m2] = hora2Input.split(':').map(Number);
+
+
+
+            const dataHora1 = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate(), h1, m1);
+
+            let dataHora2 = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate(), h2, m2);
+
+
+
+            // Ajusta se o segundo horário for menor que o primeiro (virada de dia)
+
+            if (dataHora2 < dataHora1) {
+
+                dataHora2.setDate(dataHora2.getDate() + 1); // Adiciona um dia
+
+            }
+
+
+
+            const diferencaMs = dataHora2 - dataHora1; // Diferença em milissegundos
+
+
+
+            // Converte milissegundos para horas e minutos
+
+            const totalSegundos = diferencaMs / 1000;
+
+            const horas = Math.floor(totalSegundos / 3600);
+
+            const minutos = Math.floor((totalSegundos % 3600) / 60);
+
+
+
+            resultadoElement.textContent = `${horas}${minutos}`;
+
+        }
+
+    </script>
+
+</body>
+
+</html>
